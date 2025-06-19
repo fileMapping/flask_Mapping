@@ -3,8 +3,6 @@
 
 基于Flask的简单服务器
 
-# 依赖
-
 ## 开发环境：
 - Windows 10
 - Python 3.8
