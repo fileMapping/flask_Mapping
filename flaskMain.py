@@ -13,6 +13,7 @@ from fileMapping.core import decorators
 from . import config, funos
 
 aliasRouting = True
+appRegistrationWrapper = decorators.tagAppRegistration(config.__name__)
 
 
 class CustomResponse(Response):
@@ -34,23 +35,43 @@ def main(fileMapping: File):
         config = flask_config[config.__name__]
 
     # 注册蓝图
-    app = Flask(**config.flask)
+    app = Flask(**{
+        "import_name": config.name,
+        "template_folder": config.flask["template_folder"],
+        "static_folder": config.flask["static_folder"]
+    })
     if config.removeServerHeader:
         # 移除 Server 头
         app.response_class = CustomResponse
     app.app_context()
     # 创建应用上下文
 
-    decorators.appRegistration(config.__name__, "flaskApp")(app)
+    appRegistrationWrapper("flaskApp")(app)
     # 向fileMapping注册flaskApp
 
     aliasRouting = config.aliasRouting
     # 全局变量设置
-    decorators.appRegistration(config.__name__)(funos.nameLegitimacyChecks)
+    appRegistrationWrapper()(funos.nameLegitimacyChecks)
     # 向fileMapping注册nameLegitimacyChecks
+    appRunParameters = {
+        # flask.run() 运行参数
+        "host": config.flask["host"],
+        "port": config.flask["port"]
+    }
+    appRegistrationWrapper("appRun")(appRun(app, **appRunParameters))
 
 
-@decorators.appRegistration(config.__name__)
+def appRun(app: Flask, **kwargs):
+    """
+    启动flask应用
+    """
+    def wrapper():
+        return app.run(**kwargs)
+
+    return wrapper
+
+
+@appRegistrationWrapper()
 class RoutingRegistration:
     uuid = []
     aliasRouting: bool = aliasRouting
