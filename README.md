@@ -29,9 +29,9 @@
 
 ## 手册
 
-## 公开函数
+### 公开函数
 
-### flaskApp
+#### flaskApp
 
 这个是 flask.Flask 的实例
 
@@ -39,17 +39,18 @@
 
 请不要用这个进行 `注册路由` 应该要使用 `RoutingRegistration`
 
-### RoutingRegistration
+#### RoutingRegistration
 
 `RoutingRegistration`是一个类
 
 一般用于 `注册路由` 可以更好的管理路由
 
-### appRun
+#### appRun
 
 这个函数用于启动服务器
 
 
-### nameLegitimacyChecks
+#### nameLegitimacyChecks
 
 这个函数用于检查文件名是否合法
+
