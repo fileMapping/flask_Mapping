@@ -1,25 +1,14 @@
-from fileMapping.core.decorators import appRegistration as appRegister
 
-from . import Register
-from . import data
+from .flaskMain import main
+from . import config
 
-# API
-from .funos import nameLegitimacyChecks
 
-__run__ = False
 __level__ = 2
+__version__ = "0.1.0"
+__description__ = """
+flask 的插件
+可以快速的开发
+"""
+__name__ = config.__name__
 
-__version__ = "0.0.1"
-__description__ = "File Mapping Flask Plugin"
-
-
-# @register.threadRegistration(__level__=-1)
-def run():
-    host = data.config["host"]
-    port = data.config["port"]
-
-    data.app.run(host=host, port=port)
-
-
-appRegister(run, "AppRun")
-appRegister(nameLegitimacyChecks)
+__multipleInstances__: bool = False
