@@ -5,6 +5,7 @@ from types import FunctionType
 from typing import List
 import string
 
+import rich
 from flask import Flask, Response
 from fileMapping import File
 from fileMapping.core import decorators
@@ -33,6 +34,7 @@ def main(fileMapping: File):
     if config.__name__ in flask_config:
         # 判断fileMapping有没有给配置
         config = flask_config[config.__name__]
+        rich.print(config)
 
     # 注册蓝图
     app = Flask(**{
